@@ -21,8 +21,11 @@
             <v-col cols="6">
               <v-text-field label="タイトル" v-model="item.title"></v-text-field>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="5">
               <v-text-field label="合計額" v-model="totalCost" readonly></v-text-field>
+            </v-col>
+            <v-col cols="1">
+              <v-icon color="success" @click="addData">fas fa-plus-circle</v-icon>
             </v-col>
           </v-row>
 
@@ -30,14 +33,11 @@
             <v-col cols="6">
               <v-text-field label="名称" v-model="content.text"></v-text-field>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="5">
               <v-text-field label="金額" v-model="content.cost"></v-text-field>
             </v-col>
-          </v-row>
-
-          <v-row align="center" justify="end" no-gutters>
             <v-col cols="1">
-              <v-icon color="info" large @click="addData">fas fa-plus-circle</v-icon>
+              <v-icon color="error" @click="delData(content.no)">fas fa-minus-circle</v-icon>
             </v-col>
           </v-row>
         </v-container>
@@ -78,6 +78,10 @@ export default {
         cost: 0
       };
       this.item.contents.push(content);
+    },
+    delData(no) {
+      const idx = this.item.contents.findIndex(content => content.no === no);
+      if (idx !== -1) this.item.contents.splice(idx, 1);
     }
   },
 
