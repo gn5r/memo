@@ -48,11 +48,7 @@
           <!-- 行を展開型にする。展開すると行毎の内訳を表示する -->
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length">
-              <div
-                v-for="content in item.contents"
-                :key="content.no"
-                class="body-1"
-              >
+              <div v-for="content in item.contents" :key="content.no" class="body-1">
                 {{ content.text }} :
                 {{ content.cost }}
               </div>
@@ -60,9 +56,7 @@
           </template>
 
           <template v-slot:no-data>
-            <v-alert type="error" class="body-1 font-weight-bold"
-              >データが存在しません</v-alert
-            >
+            <v-alert type="error" class="body-1 font-weight-bold">データが存在しません</v-alert>
           </template>
         </v-data-table>
       </v-card-text>
@@ -78,6 +72,8 @@
       :message="confirmObj.message"
       :buttons="confirmObj.buttons"
     />
+
+    <payment-dialog v-if="dialog" :dialog.sync="dialog" enableClose />
   </v-container>
 </template>
 
@@ -85,6 +81,7 @@
 import { Storage } from "../util/storage";
 import Confirm from "@/components/common/Confirm";
 import confirmScript from "../util/confirm";
+import PaymentDialog from "@/components/dialog/PaymentDialog";
 
 export default {
   mixins: [confirmScript],
@@ -128,23 +125,27 @@ export default {
     selected: [],
 
     // storageクラスインスタンス
-    storage: Storage
+    storage: Storage,
+
+    // データ追加・編集ダイアログ
+    dialog: false
   }),
 
   methods: {
     addData() {
-      const data = {
-        title: "テストデータ",
-        total: "65536",
-        contents: [
-          {
-            no: 1,
-            text: "内訳1",
-            cost: "65536"
-          }
-        ]
-      };
-      this.storage.add(data);
+      // const data = {
+      //   title: "テストデータ",
+      //   total: "65536",
+      //   contents: [
+      //     {
+      //       no: 1,
+      //       text: "内訳1",
+      //       cost: "65536"
+      //     }
+      //   ]
+      // };
+      // this.storage.add(data);
+      this.dialog = true;
     },
     delData(no) {
       console.debug(`item no = ${no}`);
@@ -171,7 +172,8 @@ export default {
   created() {},
 
   components: {
-    Confirm
+    Confirm,
+    PaymentDialog
   }
 };
 </script>
