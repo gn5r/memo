@@ -6,20 +6,16 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    redirect: "/top"
-  },
-  {
-    path: "/top",
+    path: "",
     name: "TopPage",
-    component: TopPage
-  }
+    component: TopPage,
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;
