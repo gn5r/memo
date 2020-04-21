@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="800">
+  <v-dialog v-model="dialog" persistent max-width="800">
     <v-card>
       <!-- ダイアログタイトル -->
       <v-card-title class="pa-0">
@@ -21,10 +21,10 @@
             <v-row align="center" justify="center">
               <!-- formで囲ってデータ追加時に入力チェックを行う -->
               <v-col cols="6">
-                <v-text-field label="タイトル" v-model="item.title"></v-text-field>
+                <v-text-field label="タイトル" v-model="item.title" :rules="rules.title" clearable></v-text-field>
               </v-col>
               <v-col cols="5">
-                <v-text-field label="合計額" v-model="totalCost" readonly></v-text-field>
+                <v-text-field label="合計額" v-model="totalCost" prefix="￥" readonly></v-text-field>
               </v-col>
               <v-col cols="1">
                 <v-icon color="success" @click="addData">fas fa-plus-circle</v-icon>
@@ -34,10 +34,10 @@
 
           <v-row align="center" justify="center" v-for="content in item.contents" :key="content.no">
             <v-col cols="6">
-              <v-text-field label="名称" v-model="content.text"></v-text-field>
+              <v-text-field label="名称" v-model="content.text" clearable></v-text-field>
             </v-col>
             <v-col cols="5">
-              <v-text-field label="金額" v-model="content.cost"></v-text-field>
+              <v-text-field label="金額" v-model="content.cost" prefix="￥" clearable></v-text-field>
             </v-col>
             <v-col cols="1">
               <v-icon color="error" @click="delData(content.no)">fas fa-minus-circle</v-icon>
@@ -87,6 +87,11 @@ export default {
           cost: 0
         }
       ]
+    },
+
+    // validation用ルール
+    rules: {
+      title: [v => (v || "").length > 0 || "タイトルは必須項目です"]
     }
   }),
 
@@ -108,7 +113,9 @@ export default {
 
     // 追加ボタン
     addContent() {
-      this.confirm("入力した内容でCookieに保存します。よろしいですか？", () => {
+      if (!this.$refs.form.validate()) return;
+
+      this.confirm("入力した内容でデータを追加します。よろしいですか？", () => {
         // syncしているdialogフラグをfalseにしてダイアログを閉じる
         this.$emit("update:dialog", false);
         // 入力したデータを親に返却
