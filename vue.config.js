@@ -19,7 +19,7 @@ module.exports = {
   // 画像などのディレクトリパス
   assetsDir: "./",
   // 本webアプリのurl的なやつ
-  publicPath: "./",
+  publicPath: "memo",
 
   // 画像ファイルなどにハッシュ値を付与しない
   filenameHashing: false,
