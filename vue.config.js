@@ -16,10 +16,8 @@ module.exports = {
   // ビルド時の出力ディレクトリ名を変更
   outputDir: "docs/",
 
-  // 画像などのディレクトリパス
-  assetsDir: "./",
   // 本webアプリのurl的なやつ
-  publicPath: "memo",
+  publicPath: "/memo/",
 
   // 画像ファイルなどにハッシュ値を付与しない
   filenameHashing: false,
