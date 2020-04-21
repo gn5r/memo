@@ -5,7 +5,7 @@
 
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on" icon @click="$router.push('')">
+        <v-btn v-on="on" icon @click="$router.push('/')">
           <v-icon>fas fa-home</v-icon>
         </v-btn>
       </template>
