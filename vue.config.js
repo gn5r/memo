@@ -17,7 +17,7 @@ module.exports = {
   outputDir: "docs/",
 
   // 本webアプリのurl的なやつ
-  publicPath: "/",
+  publicPath: "./",
 
   // 画像ファイルなどにハッシュ値を付与しない
   filenameHashing: false,
