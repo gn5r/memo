@@ -2,7 +2,7 @@
   <v-app>
     <header-bar />
     <v-content>
-      <router-view />
+      <top-page />
     </v-content>
     <footer-bar />
   </v-app>
@@ -11,13 +11,15 @@
 <script>
 import HeaderBar from "@/components/common/HeaderBar";
 import FooterBar from "@/components/common/FooterBar";
+import TopPage from "@/views/TopPage";
 
 export default {
   name: "App",
 
   components: {
     HeaderBar,
-    FooterBar
+    FooterBar,
+    TopPage
   },
 
   data: () => ({
