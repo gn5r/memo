@@ -7,8 +7,8 @@ export default {
       titleIcon: "",
       titleColor: "",
       message: "",
-      buttons: []
-    }
+      buttons: [],
+    },
   }),
 
   // 関数定義
@@ -31,13 +31,13 @@ export default {
           function: () => {
             this.close();
             if (callback !== null && typeof callback === "function") callback();
-          }
+          },
         },
         {
           text: "いいえ",
           color: "error",
-          function: this.close
-        }
+          function: this.close,
+        },
       ];
 
       // パラメーターの設定後、ダイアログを表示する
@@ -61,14 +61,14 @@ export default {
           color: "success",
           function: () => {
             this.close();
-            if (callback !== null) callback();
-          }
+            if (callback !== null && typeof callback === "function") callback();
+          },
         },
         {
           text: "いいえ",
           color: "error",
-          function: this.close
-        }
+          function: this.close,
+        },
       ];
 
       // パラメーターの設定後、ダイアログを表示する
@@ -89,8 +89,8 @@ export default {
         {
           text: "はい",
           color: "",
-          function: this.close
-        }
+          function: this.close,
+        },
       ];
       this.open();
     },
@@ -102,6 +102,6 @@ export default {
     // ダイアログを閉じる
     close() {
       this.confirmObj.dialog = false;
-    }
-  }
+    },
+  },
 };

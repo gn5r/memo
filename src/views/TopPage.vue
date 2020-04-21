@@ -19,7 +19,7 @@
               <!-- 追加ボタン -->
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
-                  <v-btn v-on="on" icon @click="addData">
+                  <v-btn v-on="on" icon @click="openDialog">
                     <v-icon color="success" large>fas fa-plus-circle</v-icon>
                   </v-btn>
                 </template>
@@ -73,7 +73,7 @@
       :buttons="confirmObj.buttons"
     />
 
-    <payment-dialog v-if="dialog" :dialog.sync="dialog" enableClose />
+    <payment-dialog v-if="dialog" :dialog.sync="dialog" enableClose @add="addData" />
   </v-container>
 </template>
 
@@ -132,19 +132,7 @@ export default {
   }),
 
   methods: {
-    addData() {
-      // const data = {
-      //   title: "テストデータ",
-      //   total: "65536",
-      //   contents: [
-      //     {
-      //       no: 1,
-      //       text: "内訳1",
-      //       cost: "65536"
-      //     }
-      //   ]
-      // };
-      // this.storage.add(data);
+    openDialog() {
       this.dialog = true;
     },
     delData(no) {
@@ -160,6 +148,10 @@ export default {
           this.items = this.storage.deleteAll();
         }
       );
+    },
+
+    addData(item) {
+      this.storage.add(item);
     }
   },
 
