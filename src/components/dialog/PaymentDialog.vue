@@ -47,7 +47,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn color="success" @click="addContent">追加</v-btn>
+        <v-btn v-if="mode === 'add'" color="success" @click="addContent">追加</v-btn>
+        <v-btn v-if="mode === 'edit'" color="success" @click="editContent">更新</v-btn>
         <v-btn color="error" @click="$emit('update:dialog',false)">キャンセル</v-btn>
       </v-card-actions>
 
@@ -74,7 +75,12 @@ export default {
   name: "PaymentDialog",
   props: {
     dialog: Boolean,
-    enableClose: Boolean
+    enableClose: Boolean,
+    mode: {
+      type: String,
+      default: "add"
+    },
+    editItem: {}
   },
   data: () => ({
     item: {
@@ -84,7 +90,7 @@ export default {
         {
           no: 1,
           text: "",
-          cost: 0
+          cost: ""
         }
       ]
     },
@@ -115,16 +121,50 @@ export default {
     addContent() {
       if (!this.$refs.form.validate()) return;
 
+      // 合計額を算術プロパティから取得
+      this.item.total = this.totalCost;
+
       this.confirm("入力した内容でデータを追加します。よろしいですか？", () => {
+        // 内訳No振り直し
+        this.resetItemIndex();
         // syncしているdialogフラグをfalseにしてダイアログを閉じる
         this.$emit("update:dialog", false);
         // 入力したデータを親に返却
         this.$emit("add", this.item);
       });
+    },
+
+    // 更新ボタン
+    editContent() {
+      if (!this.$refs.form.validate()) return;
+
+      // 合計額を算術プロパティから取得
+      this.item.total = this.totalCost;
+
+      this.confirm("入力した内容でデータを更新します。よろしいですか？", () => {
+        // 内訳No振り直し
+        this.resetItemIndex();
+        // syncしているdialogフラグをfalseにしてダイアログを閉じる
+        this.$emit("update:dialog", false);
+        // 入力したデータを親に返却
+        this.$emit("update:item", this.item);
+      });
+    },
+
+    // 内訳のNoを振り直す
+    resetItemIndex() {
+      this.item.contents.forEach((content, index) => {
+        content.no = index + 1;
+      });
     }
   },
 
-  created() {},
+  created() {
+    // 編集モードの場合、propsで渡されたデータをコピーする
+    if (this.mode === "edit") {
+      this.item = this.editItem;
+    }
+  },
   computed: {
     // 合計額を算術プロパティで計算する
     totalCost: {
