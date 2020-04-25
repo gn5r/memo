@@ -9,7 +9,6 @@
           :expanded.sync="expanded"
           item-key="no"
           show-expand
-          show-select
           hide-default-footer
         >
           <!-- テーブルヘッダーに各種ボタンを配置する -->
@@ -19,7 +18,7 @@
               <!-- 追加ボタン -->
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
-                  <v-btn v-on="on" icon @click="openDialog">
+                  <v-btn v-on="on" icon @click="addData">
                     <v-icon color="success" large>fas fa-plus-circle</v-icon>
                   </v-btn>
                 </template>
@@ -42,7 +41,8 @@
 
           <!-- アイテムごとの編集と削除 -->
           <template v-slot:item.actions="{ item }">
-            <v-icon small @click="delData(item.no)">mdi-delete</v-icon>
+            <v-icon @click="editData(item)">mdi-pencil</v-icon>
+            <v-icon @click="delData(item.no)">mdi-delete</v-icon>
           </template>
 
           <!-- 行を展開型にする。展開すると行毎の内訳を表示する -->
@@ -73,7 +73,14 @@
       :buttons="confirmObj.buttons"
     />
 
-    <payment-dialog v-if="dialog" :dialog.sync="dialog" enableClose @add="addData" />
+    <payment-dialog
+      v-if="dialog"
+      :dialog.sync="dialog"
+      :mode="mode"
+      :editItem="memoData"
+      enableClose
+      @add="addItem"
+    />
   </v-container>
 </template>
 
@@ -128,13 +135,16 @@ export default {
     storage: Storage,
 
     // データ追加・編集ダイアログ
-    dialog: false
+    dialog: false,
+
+    // データ登録時のモード
+    mode: "add",
+
+    //  編集アイテム
+    memoData: ""
   }),
 
   methods: {
-    openDialog() {
-      this.dialog = true;
-    },
     delData(no) {
       console.debug(`item no = ${no}`);
       this.confirm("削除しますがよろしいですか？", () => {
@@ -150,8 +160,20 @@ export default {
       );
     },
 
-    addData(item) {
+    addItem(item) {
       this.storage.add(item);
+    },
+
+    addData() {
+      this.mode = "add";
+      this.dialog = true;
+    },
+
+    editData(item) {
+      console.debug(item);
+      this.mode = "edit";
+      this.memoData = item;
+      this.dialog = true;
     }
   },
 

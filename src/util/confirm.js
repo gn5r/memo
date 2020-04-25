@@ -95,6 +95,26 @@ export default {
       this.open();
     },
 
+    /**
+     * 処理完了ダイアログを表示する
+     * @param {String} message ダイアログ内に表示するメッセージ
+     */
+    complete(message) {
+      // ダイアログを表示するためのパラメーター設定
+      this.confirmObj.title = "完了";
+      this.confirmObj.titleIcon = "";
+      this.confirmObj.titleColor = "info";
+      this.confirmObj.message = message;
+      this.confirmObj.buttons = [
+        {
+          text: "はい",
+          color: "",
+          function: this.close,
+        },
+      ];
+      this.open();
+    },
+
     // ダイアログを表示する
     open() {
       this.confirmObj.dialog = true;
